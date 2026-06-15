@@ -1,0 +1,358 @@
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Invoice</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+.invoice-container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 20px;
+}
+
+.logo img {
+    width: 200px;
+}
+
+.company-details {
+    text-align: right;
+}
+
+.invoice-title {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.section div {
+    width: 48%;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+}
+
+table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+table input {
+    border: none;
+    width: 100%;
+}
+
+.total-section {
+    width: 300px;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+.total-section div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+@media print {
+    button {
+        display: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="invoice-container">
+
+    <div class="header">
+        <div class="logo">
+            <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEVTaVqKUbgMcpps6pa-Ap3OI8tUB1O3wACRSsAAm2ESVX8zOCsZO__hjsE.png" alt="Logo">
+        </div>
+
+        <div class="company-details">
+            <h2>3DYCPRO</h2>
+            <p>GS TOWER AP BOARD HIMAYATH NAGAR</p>
+            <p>Hyderabad, Telangana</p>
+            <p>Phone: +91 9059061224</p>
+            <p>Email: info@3dycpro.com</p>
+            <p> GSTIN: 36AABFJ0000G1Z5</p>
+        </div>
+    </div>
+
+    <div class="invoice-title">
+        <h1>INVOICE</h1>
+    </div>
+
+    <div class="section">
+        <div>
+            <h3>Bill To</h3>
+            <input type="text" placeholder="Customer Name">
+            <textarea placeholder="Customer Address"></textarea>
+        </div>
+
+        <div>
+            <label>Invoice No.</label>
+            <input type="text" placeholder="INV-001">
+
+            <label>Date</label>
+            <input type="date">
+
+            <label>Due Date</label>
+            <input type="date">
+        </div>
+    </div>
+
+    <table id="invoiceTable">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td><input type="text"></td>
+
+                <td>
+                    <input type="number"
+                           class="qty"
+                           value="1"
+                           min="1"
+                           oninput="calculateTotals()">
+                </td>
+
+                <td>
+                    <input type="number"
+                           class="rate"
+                           value="0"
+                           min="0"
+                           oninput="calculateTotals()">
+                </td>
+
+                <td>
+                    <input type="text"
+                           class="amount"
+                           readonly>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="addRow()">Add Item</button>
+
+    <div class="total-section">
+
+        <div>
+            <span>Subtotal:</span>
+            <input type="text" id="subtotal" readonly>
+        </div>
+
+        <div>
+            <span>Tax (%):</span>
+            <input type="number"
+                   id="tax"
+                   value="18"
+                   oninput="calculateTotals()">
+        </div>
+
+        <div>
+            <strong>Grand Total:</strong>
+            <input type="text" id="grandTotal" readonly>
+        </div>
+
+    </div>
+    <!-- Scan To Pay Section -->
+<div class="payment-section">
+    <h3>Scan To Pay</h3>
+
+    <img src="https://i.postimg.cc/fL75V2LN/Whats-App-Image-2026-06-09-at-12-43-35-PM-(1).jpg" alt="QR code  2226 new"QR Code" width="60" height="90">
+
+</div>
+<h3>Payment Method:</h3>
+
+<div class="payment-options">
+    <div class="payment-item">
+        <input type="checkbox" id="cash">
+        <label for="cash">💵 Cash</label>
+    </div>
+
+    <div class="payment-item">
+        <input type="checkbox" id="scan">
+        <label for="scan">📱 Scan & Pay</label>
+    </div>
+    <div class="payment-item">
+        <input type="checkbox" id="credit">
+        <label for="credit">💳 Credit</label>
+    </div>
+    <div class="payment-item">
+        <input type="checkbox" id="paypal">
+        <label for="paypal">🅿️ PayPal</label>
+    </div>
+</div>
+    <h3>Notes</h3>
+    <textarea placeholder="Thank you for your business."></textarea>
+
+    <br>
+
+    <button onclick="window.print()">
+        Print / Save PDF
+    </button>
+    <button on click="window.print()">
+        download PDF
+    </button>
+    <button onclick="window.print()">
+        whatapp share
+    </button>
+
+
+</div>
+
+</div>
+
+<script>
+function calculateTotals() {
+
+    let subtotal = 0;
+
+    document.querySelectorAll("#invoiceTable tbody tr")
+    .forEach(row => {
+
+        let qty = parseFloat(
+            row.querySelector(".qty").value
+        ) || 0;
+
+        let rate = parseFloat(
+            row.querySelector(".rate").value
+        ) || 0;
+
+        let amount = qty * rate;
+
+        row.querySelector(".amount").value =
+            amount.toFixed(2);
+
+        subtotal += amount;
+    });
+
+    let tax =
+        parseFloat(
+            document.getElementById("tax").value
+        ) || 0;
+
+    let grandTotal =
+        subtotal + (subtotal * tax / 100);
+
+    document.getElementById("subtotal").value =
+        subtotal.toFixed(2);
+
+    document.getElementById("grandTotal").value =
+        grandTotal.toFixed(2);
+}
+
+function addRow() {
+
+    let table =
+        document.querySelector(
+            "#invoiceTable tbody"
+        );
+
+    let row = table.insertRow();
+
+    row.innerHTML = `
+        <td><input type="text"></td>
+
+        <td>
+            <input type="number"
+                   class="qty"
+                   value="1"
+                   min="1"
+                   oninput="calculateTotals()">
+        </td>
+
+        <td>
+            <input type="number"
+                   class="rate"
+                   value="0"
+                   min="0"
+                   oninput="calculateTotals()">
+        </td>
+
+        <td>
+            <input type="text"
+                   class="amount"
+                   readonly>
+        </td>
+    `;
+
+    calculateTotals();
+}
+
+calculateTotals();
+</script>
+
+</div>
+
+
+</body>
+</html>
+
+
+
